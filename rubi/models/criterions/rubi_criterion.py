@@ -9,7 +9,7 @@ class RUBiCriterion(nn.Module):
     def __init__(self, question_loss_weight=0.1):
         super().__init__()
 
-        Logger()(f'MultiLossLateFusionCriterion, with question loss = {question_loss} ({question_loss_weight})')
+        Logger()(f'RUBiCriterion, with question_loss_weight = ({question_loss_weight})')
 
         self.question_loss_weight = question_loss_weight
         self.fusion_loss = nn.CrossEntropyLoss()
@@ -26,6 +26,6 @@ class RUBiCriterion(nn.Module):
         loss = fusion_loss + self.question_loss_weight * question_loss 
 
         out['loss'] = loss
-        out['loss_fusion'] = fusion_loss
+        out['loss_mm_q'] = fusion_loss
         out['loss_q'] = question_loss
         return out

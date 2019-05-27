@@ -32,7 +32,7 @@ model:
       dir_st: data/skip-thoughts
     self_q_att: True
     cell:
-      residual: True
+      residual: False
       fusion:
         type: block
         input_dims: [4800, 2048]
@@ -42,29 +42,6 @@ model:
         rank: 15
         dropout_input: 0.
         dropout_pre_lin: 0.
-      return_all: true
-      #pairwise:
-      #  residual: True
-      #  fusion_coord:
-      #    type: block
-      #    input_dims: [4, 4]
-      #    output_dim: 2048
-      #    mm_dim: 200
-      #    chunks: 5
-      #    rank: 5
-      #    dropout_input: 0.
-      #    dropout_pre_lin: 0.
-      #  fusion_feat:
-      #    type: block
-      #    input_dims: [2048, 2048]
-      #    output_dim: 2048
-      #    mm_dim: 200
-      #    chunks: 5
-      #    rank: 5
-      #    dropout_input: 0.
-      #    dropout_pre_lin: 0.
-      #  agg:
-      #    type: max
     agg:
       type: max
     classif:
@@ -103,7 +80,7 @@ view:
   name: plotly
   items:
   - logs:train_epoch.loss+logs:eval_epoch.loss
-  - logs:train_epoch.loss_rubi_q+logs:eval_epoch.loss_rubi_q
+  - logs:train_epoch.loss_mm_q+logs:eval_epoch.loss_mm_q
   - logs:train_epoch.loss_q+logs:eval_epoch.loss_q
   - logs:train_epoch.reconstruction_loss+logs:eval_epoch.reconstruction_loss
   ######

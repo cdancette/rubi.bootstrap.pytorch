@@ -30,7 +30,7 @@ def factory(engine):
             ans_to_aid=dataset.ans_to_aid,
         )
 
-    elif opt['name'] == 'RUBi':
+    elif opt['name'] == 'rubi':
         orig_net = BaselineNet(
             txt_enc=opt['txt_enc'],
             self_q_att=opt['self_q_att'],

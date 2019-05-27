@@ -112,7 +112,7 @@ class BaselineNet(nn.Module):
 
         logits = self.classif_module(mm)
 
-        out['logits'] =  logits
+        out['logits'] = logits
 
         return out
 

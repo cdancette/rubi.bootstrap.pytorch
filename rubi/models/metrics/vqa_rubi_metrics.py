@@ -19,30 +19,27 @@ class VQAAccuracy(nn.Module):
     def __init__(self, topk=[1,5]):
         super().__init__()
         self.topk = topk
-    
-    def forward(self, logits, class_id):
 
+    def forward(self, cri_out, net_out, batch):
         out = {}
         class_id = batch['class_id'].data.cpu()
-        
         for key in ['', '_rubi', '_q']:
             logits = net_out[f'logits{key}'].data.cpu()
             acc_out = accuracy(logits, class_id, topk=self.topk)
             for i, k in enumerate(self.topk):
-                out[f'accuracy_{key}_top{k}'] = acc_out[i]
+                out[f'accuracy{key}_top{k}'] = acc_out[i]
         return out
 
 
 class VQARUBiMetrics(VQAAccuracies):
 
     def __init__(self, *args, **kwargs):
-        super(VQALateFusionAccuracies, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.accuracy = VQAAccuracy()
 
     def forward(self, cri_out, net_out, batch):
         out = {}
         if self.accuracy is not None:
-
             out = self.accuracy(cri_out, net_out, batch)
 
         # add answers and answer_ids keys to net_out
@@ -50,27 +47,21 @@ class VQARUBiMetrics(VQAAccuracies):
 
         batch_size = len(batch['index'])
         for i in range(batch_size):
+            
             # Open Ended Accuracy (VQA-VQA2)
             if self.open_ended:
-                pred_item = {
-                    'question_id': batch['question_id'][i],
-                    'answer': net_out['answers'][i]
-                }
-                self.results.append(pred_item)
-
-                pred_item = {
-                    'question_id': batch['question_id'][i],
-                    'answer': net_out['answers_q'][i]
-                }
-                self.results_q.append(pred_item)
-
-                pred_item = {
-                    'question_id': batch['question_id'][i],
-                    'answer': net_out['answers_rubi'][i]
-                }
-                self.results_rubi.append(pred_item)
+                for key in ['', '_rubi', '_q']:
+                    pred_item = {
+                        'question_id': batch['question_id'][i],
+                        'answer': net_out[f'answers{key}'][i]
+                    }
+                    self.results[key].append(pred_item)
 
                 if self.dataset.split == 'test':
+                    pred_item = {
+                        'question_id': batch['question_id'][i],
+                        'answer': net_out[f'answers'][i]
+                    }
                     if 'is_testdev' in batch and batch['is_testdev'][i]:
                         self.results_testdev.append(pred_item)
 
@@ -82,49 +73,50 @@ class VQARUBiMetrics(VQAAccuracies):
                     
                     self.idx += 1
 
-            # TDIUC metrics
-            if self.tdiuc:
-                gt_aid = batch['answer_id'][i]
-                gt_ans = batch['answer'][i]
-                gt_type = batch['question_type'][i]
-                self.gt_types.append(gt_type)
-                if gt_ans in self.ans_to_aid:
-                    self.gt_aids.append(gt_aid)
-                else:
-                    self.gt_aids.append(-1)
-                    self.gt_aid_not_found += 1
-
-                for key in ['', '_rubi', '_q']:
-                    qid = batch['question_id'][i]
-                    pred_aid = net_out[f'answer_ids{key}'][i]
-                    self.pred_aids[key].append(pred_aid)
-
-                    self.res_by_type[key][gt_type+'_pred'].append(pred_aid)
-
+                # TDIUC metrics
+                if self.tdiuc:
+                    gt_aid = batch['answer_id'][i]
+                    gt_ans = batch['answer'][i]
+                    gt_type = batch['question_type'][i]
+                    self.gt_types.append(gt_type)
                     if gt_ans in self.ans_to_aid:
-                        self.res_by_type[key][gt_type+'_gt'].append(gt_aid)
-                        if gt_aid == pred_aid:
-                            self.res_by_type[key][gt_type+'_t'].append(pred_aid)
-                        else:
-                            self.res_by_type[key][gt_type+'_f'].append(pred_aid)
+                        self.gt_aids.append(gt_aid)
                     else:
-                        self.res_by_type[key][gt_type+'_gt'].append(-1)
-                        self.res_by_type[key][gt_type+'_f'].append(pred_aid)
+                        self.gt_aids.append(-1)
+                        self.gt_aid_not_found += 1
 
+                    for key in ['', '_rubi', '_q']:
+                        qid = batch['question_id'][i]
+                        pred_aid = net_out[f'answer_ids{key}'][i]
+                        self.pred_aids[key].append(pred_aid)
+
+                        self.res_by_type[key][gt_type+'_pred'].append(pred_aid)
+
+                        if gt_ans in self.ans_to_aid:
+                            self.res_by_type[key][gt_type+'_gt'].append(gt_aid)
+                            if gt_aid == pred_aid:
+                                self.res_by_type[key][gt_type+'_t'].append(pred_aid)
+                            else:
+                                self.res_by_type[key][gt_type+'_f'].append(pred_aid)
+                        else:
+                            self.res_by_type[key][gt_type+'_gt'].append(-1)
+                            self.res_by_type[key][gt_type+'_f'].append(pred_aid)
         return out
 
     def reset_oe(self):
         self.results = dict()
+        self.dir_rslt = dict()
+        self.path_rslt = dict()
         for key in ['', '_q', '_rubi']:
             self.results[key] = []
             self.dir_rslt[key] = os.path.join(
                 self.dir_exp,
-                'results',
+                f'results{key}',
                 self.dataset.split,
                 'epoch,{}'.format(self.engine.epoch))
             os.system('mkdir -p '+self.dir_rslt[key])
             self.path_rslt[key] = os.path.join(
-                self.dir_rslt,
+                self.dir_rslt[key],
                 'OpenEnded_mscoco_{}_model_results.json'.format(
                     self.dataset.get_subtype()))
 
@@ -164,7 +156,7 @@ class VQARUBiMetrics(VQAAccuracies):
         
         for key in ['', '_rubi', '_q']:
             logs_name = (logs_name + key) or "logs"
-            with open(self.path_rslt, 'w') as f:
+            with open(self.path_rslt[key], 'w') as f:
                 json.dump(self.results[key], f)
             
             # if self.dataset.split == 'test':

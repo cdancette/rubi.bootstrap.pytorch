@@ -58,7 +58,6 @@ class MuRelCell(nn.Module):
 
         if self.residual:
             mm_new = mm_new + mm
-            out['mm_res'] = mm_new
         
         if self.buffer is not None:
             self.buffer['mm'] = mm.data.cpu()

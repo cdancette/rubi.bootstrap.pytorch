@@ -42,7 +42,7 @@ model:
         rank: 15
         dropout_input: 0.
         dropout_pre_lin: 0.
-   agg:
+    agg:
       type: max
     classif:
       mlp:

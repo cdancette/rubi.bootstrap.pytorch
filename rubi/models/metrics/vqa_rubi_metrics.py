@@ -9,10 +9,8 @@ from collections import defaultdict
 from bootstrap.models.metrics.accuracy import accuracy
 from block.models.metrics.vqa_accuracies import VQAAccuracies
 from bootstrap.lib.logger import Logger
-from .covariance_metric import covariance_factor, CovarianceMetric, correlation_metrics
 from bootstrap.lib.options import Options
 from bootstrap.lib.logger import Logger
-from .vqa_cov_metrics import VQASaveLogits
 
 class VQAAccuracy(nn.Module):
 

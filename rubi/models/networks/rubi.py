@@ -6,7 +6,13 @@ from .utils import grad_mul_const # mask_softmax, grad_reverse, grad_reverse_mas
 
 class RUBi(nn.Module):
     """
-    Same parameters as SAN
+    Wraps another model
+    The original model must return a dictionnary containing the 'logits' key (predictions before softmax)
+    Returns:
+        - logits: the original predictions of the model
+        - logits_q: the predictions from the question-only branch
+        - logits_rubi: the updated predictions from the model by the mask.
+    => Use `logits_rubi` and `logits_q` for the loss
     """
     def __init__(self, model, output_size, classif, end_classif=True):
         super().__init__()
@@ -16,7 +22,6 @@ class RUBi(nn.Module):
         if self.end_classif:
             self.c_2 = nn.Linear(output_size, output_size)
 
-
     def forward(self, batch):
         out = {}
         # model prediction
@@ -24,7 +29,7 @@ class RUBi(nn.Module):
         logits = net_out['logits']
 
         q_embedding = net_out['q_emb']  # N * q_emb
-        q_embedding = grad_mul_const(q_embedding, 0.0)  #  don't packpropagate through question encoder
+        q_embedding = grad_mul_const(q_embedding, 0.0) # don't backpropagate through question encoder
         q_pred = self.c_1(q_embedding)
         fusion_pred = logits * torch.sigmoid(q_pred)
 
@@ -43,4 +48,3 @@ class RUBi(nn.Module):
         out = self.model.process_answers(out, key='_rubi')
         out = self.model.process_answers(out, key='_q')
         return out
-

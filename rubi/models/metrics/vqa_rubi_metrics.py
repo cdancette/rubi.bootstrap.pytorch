@@ -150,7 +150,7 @@ class VQARUBiMetrics(VQAAccuracies):
     
     
     def compute_oe_accuracy(self):
-        logs_name =  Options()['misc'].get('logs_name', '') or ''
+        logs_name = Options()['misc'].get('logs_name', '') or ''
         
         for key in ['', '_rubi', '_q']:
             logs_name = (logs_name + key) or "logs"

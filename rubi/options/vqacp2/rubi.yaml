@@ -9,7 +9,7 @@ dataset:
   eval_split: val # or test
   proc_split: train # or trainval (preprocessing split, must be equal to train_split)
   nb_threads: 4
-  batch_size: 84
+  batch_size: 256
   nans: 3000
   minwcount: 0
   nlp: mcb

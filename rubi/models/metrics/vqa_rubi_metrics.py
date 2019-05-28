@@ -150,10 +150,10 @@ class VQARUBiMetrics(VQAAccuracies):
     
     
     def compute_oe_accuracy(self):
-        logs_name = Options()['misc'].get('logs_name', '') or ''
+        logs_name_prefix = Options()['misc'].get('logs_name', '') or ''
         
         for key in ['', '_rubi', '_q']:
-            logs_name = (logs_name + key) or "logs"
+            logs_name = (logs_name_prefix + key) or "logs"
             with open(self.path_rslt[key], 'w') as f:
                 json.dump(self.results[key], f)
             

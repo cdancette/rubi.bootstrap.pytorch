@@ -82,9 +82,7 @@ view:
   - logs:train_epoch.loss+logs:eval_epoch.loss
   - logs:train_epoch.loss_mm_q+logs:eval_epoch.loss_mm_q
   - logs:train_epoch.loss_q+logs:eval_epoch.loss_q
-  - logs:train_epoch.reconstruction_loss+logs:eval_epoch.reconstruction_loss
   ######
-  - logs:train_epoch.rubi_loss+logs:eval_epoch.rubi_loss
   - logs:train_epoch.accuracy_top1+logs:eval_epoch.accuracy_top1
   - logs:train_epoch.accuracy_rubi_top1+logs:eval_epoch.accuracy_rubi_top1
   - logs:train_epoch.accuracy_q_top1+logs:eval_epoch.accuracy_q_top1

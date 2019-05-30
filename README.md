@@ -3,6 +3,11 @@
 **RUBi** is a learning strategy to reduce biases in VQA models. 
 It relies on a question-only branch plugged at the end of a VQA model. 
 
+
+<p align="center">
+    <img src="https://github.com/cdancette/rubi.bootstrap.pytorch/blob/master/assets/model_rubi.png?raw=true"/>
+</p>
+
 #### Summary
 
 * [Installation](#installation)

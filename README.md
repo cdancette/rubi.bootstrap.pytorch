@@ -5,7 +5,8 @@ It relies on a question-only branch plugged at the end of a VQA model.
 
 
 <p align="center">
-    <img src="https://github.com/cdancette/rubi.bootstrap.pytorch/blob/master/assets/model_rubi.png?raw=true"/>
+    <img src="https://github.com/cdancette/rubi.bootstrap.pytorch/blob/master/assets/model_classic.png?raw=true" width="300px" style="margin-right:50px;"/>
+    <img src="https://github.com/cdancette/rubi.bootstrap.pytorch/blob/master/assets/model_rubi.png?raw=true" width="300px" style="margin-left: 50px";/>
 </p>
 
 #### Summary

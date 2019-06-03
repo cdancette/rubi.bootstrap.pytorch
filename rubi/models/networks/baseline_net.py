@@ -77,14 +77,6 @@ class BaselineNet(nn.Module):
             params += [p.numel() for p in self.q_att_linear1.parameters() if p.requires_grad]
         return sum(params)
 
-    def set_pairs_ids(self, n_regions, bsize, device='cuda'):
-        if self.shared and self.cell.pairwise:
-            self.cell.pairwise_module.set_pairs_ids(n_regions, bsize, device=device)
-        else:
-            for i in self.n_step:
-                if self.cells[i].pairwise:
-                    self.cells[i].pairwise_module.set_pairs_ids(n_regions, bsize, device=device)
-
     def forward(self, batch):
         v = batch['visual']
         q = batch['question']
@@ -124,7 +116,6 @@ class BaselineNet(nn.Module):
         if q_att_linear1 is None:
             q_att_linear1 = self.q_att_linear1
         q_emb = txt_enc.embedding(q)
-
 
         q, _ = txt_enc.rnn(q_emb)
 

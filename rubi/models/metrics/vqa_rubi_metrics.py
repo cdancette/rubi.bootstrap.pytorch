@@ -34,6 +34,7 @@ class VQARUBiMetrics(VQAAccuracies):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.accuracy = VQAAccuracy()
+        self.rm_dir_rslt = 1 if Options()['dataset.train_split'] is not None else 0
 
     def forward(self, cri_out, net_out, batch):
         out = {}

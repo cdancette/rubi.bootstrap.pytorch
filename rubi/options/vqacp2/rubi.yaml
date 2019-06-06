@@ -46,7 +46,6 @@ model:
     classif:
       mlp:
         input_dim: 2048
-        batchnorm: false
         dimensions: [1024,1024,3000]
   criterion:
     import: rubi.models.criterions.factory

@@ -44,7 +44,6 @@ model:
       mlp:
         input_dim: 2048
         dimensions: [1024,1024,3000]
-        batchnorm: false
   criterion:
     import: rubi.models.criterions.factory
     name: vqa_cross_entropy

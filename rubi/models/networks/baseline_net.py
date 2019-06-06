@@ -30,8 +30,6 @@ class BaselineNet(nn.Module):
             ):
         super().__init__()
         self.self_q_att = self_q_att
-        self.cell = cell
-        self.cell_params = cell
         self.agg = agg
         assert self.agg['type'] in ['max', 'mean']
         self.classif = classif

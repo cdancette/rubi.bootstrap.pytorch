@@ -10,7 +10,7 @@ from block.models.networks.vqa_net import VQANet as AttentionNet
 from bootstrap.lib.logger import Logger
 
 from .baseline_net import BaselineNet
-from .rubi import RUBi
+from .rubi import RUBiNet
 
 def factory(engine):
     mode = list(engine.dataset.keys())[0]
@@ -28,6 +28,8 @@ def factory(engine):
             word_to_wid=dataset.word_to_wid,
             aid_to_ans=dataset.aid_to_ans,
             ans_to_aid=dataset.ans_to_aid,
+            fusion=opt['fusion'],
+            residual=opt['residual'],
         )
 
     elif opt['name'] == 'rubi':
@@ -41,8 +43,10 @@ def factory(engine):
             word_to_wid=dataset.word_to_wid,
             aid_to_ans=dataset.aid_to_ans,
             ans_to_aid=dataset.ans_to_aid,
+            fusion=opt['fusion'],
+            residual=opt['residual'],
         )
-        net = RUBi(
+        net = RUBiNet(
             model=orig_net,
             output_size=len(dataset.aid_to_ans),
             classif=opt['rubi_params']['mlp_q']

@@ -53,11 +53,7 @@ class VQA2(AbstractVQA):
         self.dir_cnn = dir_cnn
         self.load_image_features()
         # to activate manually in visualization context (notebo# to activate manually in visualization context (notebook)
-        self.load_original_annotation = True
-
-        if 'bert' in Options()['model.network.name']:
-            from pytorch_pretrained_bert import BertTokenizer
-            self.tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+        self.load_original_annotation = False
 
     def add_rcnn_to_item(self, item):
         path_rcnn = os.path.join(self.dir_rcnn, '{}.pth'.format(item['image_name']))
@@ -108,16 +104,8 @@ class VQA2(AbstractVQA):
 
         item['question_id'] = question['question_id']
 
-        if 'bert' in Options()['model.network.name']:
-            tokenized_text = self.tokenizer.tokenize(question['question'])
-            indexed_tokens = self.tokenizer.convert_tokens_to_ids(tokenized_text)
-            tokens_tensor = torch.tensor(indexed_tokens)
-            item['question'] = tokens_tensor
-            item['lengths'] = torch.LongTensor([len(tokenized_text)])
-        else:
-            #question['question_wids'] = question['question_wids'][:26]
-            item['question'] = torch.tensor(question['question_wids'], dtype=torch.long)
-            item['lengths'] = torch.tensor([len(question['question_wids'])], dtype=torch.long)
+        item['question'] = torch.tensor(question['question_wids'], dtype=torch.long)
+        item['lengths'] = torch.tensor([len(question['question_wids'])], dtype=torch.long)
         item['image_name'] = question['image_name']
 
         # Process Object, Attribut and Relational features

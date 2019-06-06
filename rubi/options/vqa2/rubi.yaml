@@ -31,17 +31,16 @@ model:
       fixed_emb: False
       dir_st: data/skip-thoughts
     self_q_att: True
-    cell:
-      residual: False
-      fusion:
-        type: block
-        input_dims: [4800, 2048]
-        output_dim: 2048
-        mm_dim: 1000
-        chunks: 20
-        rank: 15
-        dropout_input: 0.
-        dropout_pre_lin: 0.
+    residual: False
+    fusion:
+      type: block
+      input_dims: [4800, 2048]
+      output_dim: 2048
+      mm_dim: 1000
+      chunks: 20
+      rank: 15
+      dropout_input: 0.
+      dropout_pre_lin: 0.
     agg:
       type: max
     classif:

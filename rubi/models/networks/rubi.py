@@ -4,7 +4,7 @@ from block.models.networks.mlp import MLP
 from .utils import grad_mul_const # mask_softmax, grad_reverse, grad_reverse_mask, 
 
 
-class RUBi(nn.Module):
+class RUBiNet(nn.Module):
     """
     Wraps another model
     The original model must return a dictionnary containing the 'logits' key (predictions before softmax)
@@ -16,7 +16,7 @@ class RUBi(nn.Module):
     """
     def __init__(self, model, output_size, classif, end_classif=True):
         super().__init__()
-        self.model = model
+        self.net = model
         self.c_1 = MLP(**classif)
         self.end_classif = end_classif
         if self.end_classif:
@@ -25,7 +25,7 @@ class RUBi(nn.Module):
     def forward(self, batch):
         out = {}
         # model prediction
-        net_out = self.model(batch)
+        net_out = self.net(batch)
         logits = net_out['logits']
 
         q_embedding = net_out['q_emb']  # N * q_emb
@@ -44,7 +44,7 @@ class RUBi(nn.Module):
         return out
 
     def process_answers(self, out, key=''):
-        out = self.model.process_answers(out)
-        out = self.model.process_answers(out, key='_rubi')
-        out = self.model.process_answers(out, key='_q')
+        out = self.net.process_answers(out)
+        out = self.net.process_answers(out, key='_rubi')
+        out = self.net.process_answers(out, key='_q')
         return out

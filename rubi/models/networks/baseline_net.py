@@ -20,13 +20,14 @@ class BaselineNet(nn.Module):
     def __init__(self,
             txt_enc={},
             self_q_att=False,
-            cell={},
             agg={},
             classif={},
             wid_to_word={},
             word_to_wid={},
             aid_to_ans=[],
             ans_to_aid={},
+            fusion={},
+            residual=False,
             ):
         super().__init__()
         self.self_q_att = self_q_att
@@ -39,6 +40,8 @@ class BaselineNet(nn.Module):
         self.word_to_wid = word_to_wid
         self.aid_to_ans = aid_to_ans
         self.ans_to_aid = ans_to_aid
+        self.fusion = fusion
+        self.residual = residual
         
         # Modules
         self.txt_enc = self.get_text_enc(self.wid_to_word, txt_enc)
@@ -46,7 +49,7 @@ class BaselineNet(nn.Module):
             self.q_att_linear0 = nn.Linear(2400, 512)
             self.q_att_linear1 = nn.Linear(512, 2)
 
-        self.cell = MuRelCell(**cell)
+        self.fusion_module = block.factory_fusion(self.fusion)
 
         if self.classif['mlp']['dimensions'][-1] != len(self.aid_to_ans):
             Logger()(f"Warning, the classif_mm output dimension ({self.classif['mlp']['dimensions'][-1]})" 
@@ -77,6 +80,15 @@ class BaselineNet(nn.Module):
             params += [p.numel() for p in self.q_att_linear1.parameters() if p.requires_grad]
         return sum(params)
 
+    def process_fusion(self, q, mm):
+        bsize = mm.shape[0]
+        n_regions = mm.shape[1]
+
+        mm = mm.contiguous().view(bsize*n_regions, -1)
+        mm = self.fusion_module([q, mm])
+        mm = mm.view(bsize, n_regions, -1)
+        return mm
+
     def forward(self, batch):
         v = batch['visual']
         q = batch['question']
@@ -93,7 +105,11 @@ class BaselineNet(nn.Module):
         q_expand = q[:,None,:].expand(bsize, n_regions, q.shape[1])
         q_expand = q_expand.contiguous().view(bsize*n_regions, -1)
 
-        mm = self.cell(q_expand, v, c, nb_regions)
+        mm = self.process_fusion(q_expand, v,)
+
+        if self.residual:
+            mm = v + mm
+
         if self.agg['type'] == 'max':
             mm, mm_argmax = torch.max(mm, 1)
         elif self.agg['type'] == 'mean':
@@ -103,9 +119,7 @@ class BaselineNet(nn.Module):
         out['mm_argmax'] = mm_argmax
 
         logits = self.classif_module(mm)
-
         out['logits'] = logits
-
         return out
 
     def process_question(self, q, l, txt_enc=None, q_att_linear0=None, q_att_linear1=None):

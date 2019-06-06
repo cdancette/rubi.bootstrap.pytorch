@@ -12,7 +12,6 @@ import block
 from block.models.networks.vqa_net import factory_text_enc
 from block.models.networks.mlp import MLP
 
-from .murel_cell import MuRelCell
 from .utils import mask_softmax
 
 class BaselineNet(nn.Module):

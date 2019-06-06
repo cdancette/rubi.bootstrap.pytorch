@@ -21,7 +21,6 @@ def factory(engine):
         net = BaselineNet(
             txt_enc=opt['txt_enc'],
             self_q_att=opt['self_q_att'],
-            cell=opt['cell'],
             agg=opt['agg'],
             classif=opt['classif'],
             wid_to_word=dataset.wid_to_word,
@@ -36,7 +35,6 @@ def factory(engine):
         orig_net = BaselineNet(
             txt_enc=opt['txt_enc'],
             self_q_att=opt['self_q_att'],
-            cell=opt['cell'],
             agg=opt['agg'],
             classif=opt['classif'],
             wid_to_word=dataset.wid_to_word,

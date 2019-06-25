@@ -187,6 +187,28 @@ python -m bootstrap.run \
 --misc.logs_name test
 ```
 
+## Weights of best model
+
+
+The weights for the model trained on VQA-CP v2 can be downloaded here : http://webia.lip6.fr/~cadene/rubi/ckpt_last_model.pth.tar
+
+To use it : 
+* Run this command once to create the experiment folder. Cancel it when the training starts
+
+```bash
+python -m bootstrap.run \
+-o rubi/options/vqacp2/rubi.yaml \
+--exp.dir logs/vqacp2/rubi
+```
+
+* Move the downloaded file to the experiment folder, and use the flag `--exp.resume last` to use this checkpoint : 
+
+```bash
+python -m bootstrap.run \
+-o logs/vqacp2/rubi/options.yaml \
+--exp.resume last
+```
+
 
 ## Useful commands
 

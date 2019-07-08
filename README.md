@@ -45,7 +45,7 @@ pip install -r requirements.txt
 By importing the `rubi` python module, you can access datasets and models in a simple way.
 
 ```python
-from rubi.models.networks.rubi import RUBi
+from rubi.models.networks.rubi import RUBiNet
 ```
 
 To be able to do so, you can use pip:
@@ -77,7 +77,7 @@ bash rubi/datasets/scripts/download_vqacp2.sh
 The main model is RUBi. 
 
 ```python
-from rubi.models.networks.rubi import RUBi
+from rubi.models.networks.rubi import RUBiNet
 ```
 
 RUBi takes as input another VQA model, adds a question branch around it. The question predictions are merged with the original predictions.

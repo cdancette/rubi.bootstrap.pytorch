@@ -44,24 +44,20 @@ pip install -r requirements.txt
 
 ### (1. As a python library)
 
-By importing the `rubi` python module, you can access datasets and models in a simple way.
-
-```python
-from rubi.models.networks.rubi import RUBiNet
-```
-
-To be able to do so, you can use pip:
-```
-TODO
-```
-
-Or install from source:
+To install the library 
 ```
 git clone https://github.com/cdancette/rubi.bootstrap.pytorch.git
 python setup.py install
 ```
 
-**Note:** This repo is built on top of [block.bootstrap.pytorch](https://github.com/Cadene/block.bootstrap.pytorch). We import VQA2, TDIUC, VGenome from the latter.
+Then by importing the `rubi` python module, you can access datasets and models in a simple way.
+
+```python
+from rubi.models.networks.rubi import RUBiNet
+```
+
+
+**Note:** This repo is built on top of [block.bootstrap.pytorch](https://github.com/Cadene/block.bootstrap.pytorch). We import VQA2, TDIUC, VGenome from this library.
 
 ### 2. Download datasets
 

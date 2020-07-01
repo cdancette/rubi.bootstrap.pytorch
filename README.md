@@ -1,6 +1,9 @@
 # RUBi : Reducing Unimodal Biases for Visual Question Answering
 
-This is the code for the NeurIPS 2019 article available here: https://arxiv.org/abs/1906.10169
+This is the code for the NeurIPS 2019 article available here: https://arxiv.org/abs/1906.10169.
+
+This paper was written by [Rémi Cadene](http://www.remicadene.com/), [Corentin Dancette](https://cdancette.fr), [Xinlein Chen](http://xinleic.xyz/) and [Matthieu Cord](http://webia.lip6.fr/~cord/)
+
 
 **RUBi** is a learning strategy to reduce biases in VQA models. 
 It relies on a question-only branch plugged at the end of a VQA model. 

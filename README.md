@@ -257,7 +257,7 @@ python -m bootstrap.run -o logs/vqacp2/rubi/options.yaml \
 
 ## Authors
 
-This code was made available by 
+This code was made available by [Corentin Dancette](https://cdancette.fr) and [Rémi Cadene](http://www.remicadene.com/)
 
 ## Acknowledgment
 

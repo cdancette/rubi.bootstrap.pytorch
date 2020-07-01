@@ -1,5 +1,7 @@
 # RUBi : Reducing Unimodal Biases for Visual Question Answering
 
+This is the code for the NeurIPS 2019 article available here: https://arxiv.org/abs/1906.10169
+
 **RUBi** is a learning strategy to reduce biases in VQA models. 
 It relies on a question-only branch plugged at the end of a VQA model. 
 

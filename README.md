@@ -2,7 +2,7 @@
 
 This is the code for the NeurIPS 2019 article available here: https://arxiv.org/abs/1906.10169.
 
-This paper was written by [Rémi Cadene](http://www.remicadene.com/), [Corentin Dancette](https://cdancette.fr), [Hedi Ben Younes], [Matthieu Cord](http://webia.lip6.fr/~cord/) and [Devi Parikh](https://www.cc.gatech.edu/~parikh/).
+This paper was written by [Rémi Cadene](http://www.remicadene.com/), [Corentin Dancette](https://cdancette.fr), Hedi Ben Younes, [Matthieu Cord](http://webia.lip6.fr/~cord/) and [Devi Parikh](https://www.cc.gatech.edu/~parikh/).
 
 
 **RUBi** is a learning strategy to reduce biases in VQA models. 

@@ -1,5 +1,5 @@
 exp:
-  dir: logs/vqacp2/baseline
+  dir: logs/vqa2/baseline
   resume: # last, best_[...], or empty (from scratch)
 dataset:
   import: rubi.datasets.factory

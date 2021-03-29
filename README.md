@@ -257,6 +257,18 @@ python -m bootstrap.run -o logs/vqacp2/rubi/options.yaml \
 --exp.resume last
 ```
 
+## Cite
+
+```
+@article{cadene2019rubi,
+  title={RUBi: Reducing Unimodal Biases for Visual Question Answering},
+  author={Cadene, Remi and Dancette, Corentin and Cord, Matthieu and Parikh, Devi and others},
+  journal={Advances in Neural Information Processing Systems},
+  volume={32},
+  pages={841--852},
+  year={2019}
+}
+```
 
 ## Authors
 
@@ -265,3 +277,5 @@ This code was made available by [Corentin Dancette](https://cdancette.fr) and [R
 ## Acknowledgment
 
 Special thanks to the authors of [VQA2](TODO), [TDIUC](TODO), [VisualGenome](TODO) and [VQACP2](TODO), the datasets used in this research project.
+
+
